@@ -17,9 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_pelanggan');
             $table->unsignedBigInteger('id_petugas');
             $table->unsignedBigInteger('id_kasir');
-            $table->string('status', 15);
-            $table->datetime('tanggal_penagihan');
-            $table->double('jumlah_tagihan', 17, 2);
+            $table->string('status', 15)->nullable(false);
+            $table->double('meteran', 10, 2)->nullable(false);
+            $table->string('bulan_penggunaan',6)->nullable(false);
+            $table->datetime('tanggal_penagihan')->nullable(false);
+            $table->double('jumlah_tagihan', 17, 2)->nullable(false);
 
             $table->foreign('id_admin')->references('id_admin')->on('administrator');
             $table->foreign('id_petugas')->references('id_petugas')->on('petugas_meteran');

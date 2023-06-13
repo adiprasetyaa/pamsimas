@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('administrator', function (Blueprint $table) {
             $table->id('id_admin')->unique();
-            $table->string('password_admin', 8);
+            $table->unsignedBigInteger('id_user');
+
+            $table->foreign('id_user')->references('id_user')->on('users');
             $table->timestamps();
         });
     }
