@@ -8,4 +8,36 @@ class Tagihan extends Model
 {
     protected $table = 'tagihan';
     protected $primaryKey = 'id_tagihan';
+
+    protected $fillable = [
+        'id_admin',
+        'id_pelanggan',
+        'id_petugas',
+        'id_kasir',
+        'status',
+        'meteran',
+        'bulan_penggunaan',
+        'tanggal_penagihan',
+        'jumlah_tagihan',
+    ];
+
+    public function administrator()
+    {
+        return $this->belongsTo(Administrator::class, 'id_admin');
+    }
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
+    }
+
+    public function petugasMeteran()
+    {
+        return $this->belongsTo(PetugasMeteran::class, 'id_petugas');
+    }
+
+    public function kasir()
+    {
+        return $this->belongsTo(Kasir::class, 'id_kasir');
+    }
 }
