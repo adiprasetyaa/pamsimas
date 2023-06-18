@@ -36,7 +36,8 @@ require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard',[AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
-    
+    Route::get('/admin/logout',[AdminController::class, 'AdminLogout'])->name('admin.logout');
+    Route::get('/admin/profile',[AdminController::class, 'AdminProfile'])->name('admin.profile');
 }); // End Group Admin Middleware
 
 Route::middleware(['auth', 'role:petugas'])->group(function () {
@@ -52,3 +53,5 @@ Route::middleware(['auth', 'role:pelanggan'])->group(function () {
 Route::middleware(['auth', 'role:kasir'])->group(function () {   
     Route::get('/kasir/dashboard',[KasirController::class, 'KasirDashboard'])->name('kasir.dashboard');
 }); // End Group Kasir Middleware
+
+Route::get('/admin/login',[AdminController::class, 'AdminLogin'])->name('admin.login');
