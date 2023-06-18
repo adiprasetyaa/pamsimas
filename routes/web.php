@@ -34,10 +34,21 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/admin/dashboard',[AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard',[AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+    
+}); // End Group Admin Middleware
 
-Route::get('/petugas/dashboard',[PetugasMeteranController::class, 'PetugasDashboard'])->name('petugas.dashboard');
+Route::middleware(['auth', 'role:petugas'])->group(function () {
+    Route::get('/petugas/dashboard',[PetugasMeteranController::class, 'PetugasDashboard'])->name('petugas.dashboard');
+    
+}); // End Group Petugas Middleware
 
-Route::get('/pelanggan/dashboard',[PelangganController::class, 'PelangganDashboard'])->name('pelanggan.dashboard');
+Route::middleware(['auth', 'role:pelanggan'])->group(function () {
+    Route::get('/pelanggan/dashboard',[PelangganController::class, 'PelangganDashboard'])->name('pelanggan.dashboard');
+    
+}); // End Group Pelanggan Middleware
 
-Route::get('/kasir/dashboard',[KasirController::class, 'KasirDashboard'])->name('kasir.dashboard');
+Route::middleware(['auth', 'role:kasir'])->group(function () {   
+    Route::get('/kasir/dashboard',[KasirController::class, 'KasirDashboard'])->name('kasir.dashboard');
+}); // End Group Kasir Middleware
