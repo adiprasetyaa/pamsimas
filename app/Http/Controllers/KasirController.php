@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class KasirController extends Controller
 {
+    public function KasirDashboard(){
+        return view('kasir.kasir_dashboard');
+    }
+
     public function index()
     {
         $kasirs = Kasir::all();

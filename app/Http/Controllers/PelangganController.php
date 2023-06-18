@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class PelangganController extends Controller
 {
+    public function PelangganDashboard(){
+        return view('pelanggan.pelanggan_dashboard');
+    }
+
     public function index()
     {
         $pelanggans = Pelanggan::all();

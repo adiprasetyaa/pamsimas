@@ -23,7 +23,7 @@ return new class extends Migration
             $table->datetime('tanggal_penagihan')->nullable(false);
             $table->double('jumlah_tagihan', 17, 2)->nullable(false);
 
-            $table->foreign('id_admin')->references('id_admin')->on('administrator');
+            $table->foreign('id_admin')->references('id_admin')->on('admin');
             $table->foreign('id_petugas')->references('id_petugas')->on('petugas_meteran');
             $table->foreign('id_pelanggan')->references('id_pelanggan')->on('pelanggan');
             $table->foreign('id_kasir')->references('id_kasir')->on('kasir');

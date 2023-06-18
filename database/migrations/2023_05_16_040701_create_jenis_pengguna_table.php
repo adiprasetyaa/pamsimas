@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_jenis_pengguna', 25)->nullable(false);
             $table->unsignedBigInteger('id_admin');
 
-            $table->foreign('id_admin')->references('id_admin')->on('administrator');
+            $table->foreign('id_admin')->references('id_admin')->on('admin');
             $table->timestamps();
         });
     }

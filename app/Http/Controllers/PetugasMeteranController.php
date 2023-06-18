@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class PetugasMeteranController extends Controller
 {
+    public function PetugasDashboard(){
+        return view('petugas.petugas_dashboard');
+    }
+
     public function index()
     {
         $petugasMeterans = PetugasMeteran::all();

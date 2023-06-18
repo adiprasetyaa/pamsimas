@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Administrator;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 
-class AdministratorController extends Controller
+class AdminController extends Controller
 {
+    public function AdminDashboard(){
+        return view('admin.admin_dashboard');
+    }
+
     public function index()
     {
         $administrators = Administrator::all();
