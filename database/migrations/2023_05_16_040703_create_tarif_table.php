@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tarif', function (Blueprint $table) {
-            $table->id('id_tarif')->unique();
+            $table->id('id_tarif');
             $table->unsignedBigInteger('id_jenis_pengguna');
             $table->double('biaya_tarif', 14, 2)->nullable(false);
-            $table->double('skala_penggunaan', 10, 2)->nullable(false);
+            $table->double('minimum', 10, 2)->nullable(false);
+            $table->double('maximum', 10, 2)->nullable(false);
 
             $table->foreign('id_jenis_pengguna')->references('id_jenis_pengguna')->on('jenis_pengguna');
 

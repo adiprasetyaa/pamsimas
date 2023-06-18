@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('area', 50)->nullable(false);
 
             $table->foreign('id_user')->references('id_user')->on('users');
-            $table->foreign('id_admin')->references('id_admin')->on('administrator');
+            $table->foreign('id_admin')->references('id_admin')->on('admin');
             $table->timestamps();
         });
     }

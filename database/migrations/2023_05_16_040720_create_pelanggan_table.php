@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('kecamatan', 50)->nullable(false);
 
             $table->foreign('id_user')->references('id_user')->on('users');
-            $table->foreign('id_admin')->references('id_admin')->on('administrator');
+            $table->foreign('id_admin')->references('id_admin')->on('admin');
             $table->foreign('id_jenis_pengguna')->references('id_jenis_pengguna')->on('jenis_pengguna');
             $table->foreign('id_petugas')->references('id_petugas')->on('petugas_meteran');
 
