@@ -26,6 +26,8 @@
   <link href="{{ asset('backend/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
   <link href="{{ asset('backend/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
+  
   <!-- Template Main CSS File -->
   <link href="{{ asset('backend/assets/css/style.css') }}" rel="stylesheet">
 
@@ -65,6 +67,32 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('backend/assets/js/main.js') }}"></script>
+
+      
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+  @if(Session::has('message'))
+  var type = "{{ Session::get('alert-type','info') }}"
+  switch(type){
+    case 'info':
+    toastr.info(" {{ Session::get('message') }} ");
+    break;
+
+    case 'success':
+    toastr.success(" {{ Session::get('message') }} ");
+    break;
+
+    case 'warning':
+    toastr.warning(" {{ Session::get('message') }} ");
+    break;
+
+    case 'error':
+    toastr.error(" {{ Session::get('message') }} ");
+    break; 
+  }
+  @endif 
+  </script>
 
 </body>
 
