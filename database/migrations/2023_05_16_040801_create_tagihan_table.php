@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tagihan', function (Blueprint $table) {
-            $table->id('id_tagihan')->unique();
+            $table->id('id_tagihan');
             $table->unsignedBigInteger('id_admin');
             $table->unsignedBigInteger('id_pelanggan');
             $table->unsignedBigInteger('id_petugas');
             $table->unsignedBigInteger('id_kasir');
-            $table->string('status', 15)->nullable(false);
-            $table->double('meteran', 10, 2)->nullable(false);
-            $table->string('bulan_penggunaan',6)->nullable(false);
-            $table->datetime('tanggal_penagihan')->nullable(false);
-            $table->double('jumlah_tagihan', 17, 2)->nullable(false);
+            $table->enum('status', ['Belum Lunas', 'Sedang Diproses', 'Sudah Lunas'])->default('Belum Lunas');
+            $table->double('meteran', 10, 2)->nullable();
+            $table->char('bulan_penggunaan',6)->nullable();
+            $table->date('tanggal_penagihan')->nullable();
+            $table->double('jumlah_tagihan', 17, 2)->nullable(false)->default(0);
 
             $table->foreign('id_admin')->references('id_admin')->on('admin');
             $table->foreign('id_petugas')->references('id_petugas')->on('petugas_meteran');

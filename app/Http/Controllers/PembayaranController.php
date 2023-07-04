@@ -3,74 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembayaran;
+use App\Models\Tagihan;
 use Illuminate\Http\Request;
 
 class PembayaranController extends Controller
 {
-    public function index()
+    public function create($id_tagihan)
     {
-        $pembayarans = Pembayaran::all();
-        return view('pembayarans.index', compact('pembayarans'));
+        $data_tagihan = Tagihan::findOrFail($id_tagihan);
+        return view('pelanggan.backend.tagihan.index', compact('data_tagihan'));
     }
 
-    public function create()
+
+    public function store(Request $request, $id_tagihan)
     {
-        return view('pembayarans.create');
-    }
+        // ddd($request)->all();
 
-    public function store(Request $request)
-    {
-        $pembayaran = Pembayaran::create([
-            'id_pelanggan' => $request->input('id_pelanggan'),
-            'id_kasir' => $request->input('id_kasir'),
-            'tanggal_pembayaran' => $request->input('tanggal_pembayaran'),
-            'jumlah_pembayaran' => $request->input('jumlah_pembayaran'),
-            'bukti_pembayaran' => $request->input('bukti_pembayaran'),
-        ]);
+        // Validation for the input
 
-        // Handle any additional logic or validation here
+        // Get tagihan data by id_tagihan
+        // $tagihan = Tagihan::findOrFail($request->tagihan_id)
 
-        return redirect()->route('pembayarans.index')
-            ->with('success', 'Pembayaran created successfully.');
-    }
+        // Find the Pelanggan record
+        $tagihan = Tagihan::where('id_tagihan', $id_tagihan)->firstOrFail();
 
-    public function show($id)
-    {
-        $pembayaran = Pembayaran::findOrFail($id);
-        return view('pembayarans.show', compact('pembayaran'));
-    }
+        // Find the associated User record
+        $pembayaran = Pembayaran::findOrFail($tagihan->id_tagihan);
+    
+        // Handle the uploaded file
+        $uploadedFile = $request->bukti_pembayaran;
+        $fileName = $uploadedFile->getClientOriginalName();
+        $uploadedFile->move('upload/bukti_pembayaran/', $fileName);
+        $bukti_pembayaran_path = 'upload/bukti_pembayaran/' . $fileName;
 
-    public function edit($id)
-    {
-        $pembayaran = Pembayaran::findOrFail($id);
-        return view('pembayarans.edit', compact('pembayaran'));
-    }
+        // save to pembayaran table
+        $pembayaran = new Pembayaran();
+        $pembayaran->id_tagihan = $id_tagihan;
+        $pembayaran->id_pelanggan = $tagihan->id_pelanggan;
+        $pembayaran->jumlah_pembayaran = $tagihan->jumlah_tagihan;
+        $pembayaran->id_kasir = $tagihan->id_kasir;
+        $pembayaran->bukti_pembayaran = $bukti_pembayaran_path;
+        $pembayaran->tanggal_pembayaran = $request->tanggal_pembayaran;
+        $pembayaran->save();
 
-    public function update(Request $request, $id)
-    {
-        $pembayaran = Pembayaran::findOrFail($id);
-        $pembayaran->update([
-            'id_pelanggan' => $request->input('id_pelanggan'),
-            'id_kasir' => $request->input('id_kasir'),
-            'tanggal_pembayaran' => $request->input('tanggal_pembayaran'),
-            'jumlah_pembayaran' => $request->input('jumlah_pembayaran'),
-            'bukti_pembayaran' => $request->input('bukti_pembayaran'),
-        ]);
-
-        // Handle any additional logic or validation here
-
-        return redirect()->route('pembayarans.index')
-            ->with('success', 'Pembayaran updated successfully.');
-    }
-
-    public function destroy($id)
-    {
-        $pembayaran = Pembayaran::findOrFail($id);
-        $pembayaran->delete();
-
-        // Handle any additional logic or validation here
-
-        return redirect()->route('pembayarans.index')
-            ->with('success', 'Pembayaran deleted successfully.');
+        // Redirect 
+        return redirect()->route('pelanggan.tagihan.index')
+            ->with('success', 'Bukti Pembayaran uploaded successfully.');
     }
 }

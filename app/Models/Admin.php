@@ -4,10 +4,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Administrator extends Model
+class Admin extends Model
 {
     use HasFactory;
-    protected $table = 'administrator';
+    protected $table = 'admin';
     protected $primaryKey = 'id_admin';
 
     protected $fillable = [

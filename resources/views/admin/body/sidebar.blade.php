@@ -137,30 +137,44 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="{{ route('admin.tarif.index') }}">
           <i class="bi bi-person"></i>
           <span>Settings Tarif</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
+        <a class="nav-link collapsed" href="{{ route('admin.jenis.pengguna.index') }}">
+          <i class="bi bi-question-circle"></i>
+          <span>Mengelola Jenis Pengguna</span> 
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ route('admin.pelanggan.index') }}">
           <i class="bi bi-question-circle"></i>
           <span>Mengelola Pelanggan</span>
         </a>
       </li><!-- End F.A.Q Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
+        <a class="nav-link collapsed" href="{{ route('admin.petugas.index') }}">
           <i class="bi bi-envelope"></i>
           <span>Mengelelola Petugas Meteran</span>
         </a>
       </li><!-- End Contact Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
+        <a class="nav-link collapsed" href="{{ route('admin.kasir.index') }}">
           <i class="bi bi-card-list"></i>
           <span>Mengelola Kasir</span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ route('admin.area.index') }}">
+          <i class="bi bi-card-list"></i>
+          <span>Mengelola Area</span>
         </a>
       </li><!-- End Register Page Nav -->
 

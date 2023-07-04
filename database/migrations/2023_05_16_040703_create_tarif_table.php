@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_jenis_pengguna');
             $table->double('biaya_tarif', 14, 2)->nullable(false);
             $table->double('minimum', 10, 2)->nullable(false);
-            $table->double('maximum', 10, 2)->nullable(false);
+            $table->double('maximum')->default(PHP_INT_MAX)->nullable(false);
 
             $table->foreign('id_jenis_pengguna')->references('id_jenis_pengguna')->on('jenis_pengguna');
 

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Admin;
+use App\Models\Area;
 use App\Models\PetugasMeteran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PetugasMeteranController extends Controller
 {
@@ -13,64 +17,110 @@ class PetugasMeteranController extends Controller
 
     public function index()
     {
-        $petugasMeterans = PetugasMeteran::all();
-        return view('petugasMeterans.index', compact('petugasMeterans'));
+        $data_petugas = PetugasMeteran::with('user')->get();
+        $data_admin = Admin::latest()->get();
+        $data_area = Area::latest()->get();
+        return view('admin.backend.petugas.index',compact('data_petugas','data_admin','data_area'));
     }
 
     public function create()
     {
-        return view('petugasMeterans.create');
+
+        // $data_petugas = PetugasMeteran::with('user')->get();
+        $data_admin = Admin::latest()->get();
+        $data_area = Area::latest()->get();
+        return view('admin.backend.petugas.index',compact('data_admin','data_area'));
     }
 
     public function store(Request $request)
     {
-        $petugasMeteran = PetugasMeteran::create([
-            'id_admin' => $request->input('id_admin'),
-            'id_user' => $request->input('id_user'),
-            'area' => $request->input('area'),
+        // return $request;
+        $request-> validate([
+            'name' => 'required',
+            'email' => 'required',
+            'id_area' => 'required'
+        ],[
+            'name.required' => 'Mohon isi kolom nama dengan benar!'
         ]);
 
-        // Handle any additional logic or validation here
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = 'petugas';
+        $user->password = Hash::make($request->password); // You can replace 'password' with an appropriate default password
+        $user->save(); 
+        
+    
+        // Create a new PetugasMeteran
+        $petugas = new PetugasMeteran();
+        $petugas->id_user = $user->id_user;
+        $petugas->id_admin = $request->id_admin;
+        $petugas->id_area = $request->id_area;
+        $petugas->save();
 
-        return redirect()->route('petugasMeterans.index')
-            ->with('success', 'Petugas Meteran created successfully.');
+        return redirect()->route('admin.petugas.index')
+            ->with('success', 'Petugas created successfully.');
     }
 
     public function show($id)
     {
-        $petugasMeteran = PetugasMeteran::findOrFail($id);
-        return view('petugasMeterans.show', compact('petugasMeteran'));
+        
+        
+    }
+    
+    public function edit($id_petugas)
+    {
+        $data_admin = Admin::latest()->get();
+        $data_area = Area::latest()->get();
+        $data_petugas = PetugasMeteran::findOrFail($id_petugas);
+        return view('admin.backend.petugas.index', compact('data_admin','data_petugas','data_area'));
     }
 
-    public function edit($id)
-    {
-        $petugasMeteran = PetugasMeteran::findOrFail($id);
-        return view('petugasMeterans.edit', compact('petugasMeteran'));
-    }
+    
 
-    public function update(Request $request, $id)
-    {
-        $petugasMeteran = PetugasMeteran::findOrFail($id);
-        $petugasMeteran->update([
-            'id_admin' => $request->input('id_admin'),
-            'id_user' => $request->input('id_user'),
-            'area' => $request->input('area'),
-        ]);
+    public function update(Request $request, $id_petugas)
+    {   
 
-        // Handle any additional logic or validation here
+        // Find the PetugasMeteran record
+        $petugas = PetugasMeteran::where('id_petugas', $id_petugas)->firstOrFail();
 
-        return redirect()->route('petugasMeterans.index')
+        // Find the associated User record
+        $user = User::findOrFail($petugas->id_user);
+
+        // Update the User record
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = 'petugas';
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Update the PetugasMeteran record
+        $petugas->id_admin = $request->id_admin;
+        $petugas->id_area = $request->id_area;
+        $petugas->save();
+
+        return redirect()->route('admin.petugas.index')
             ->with('success', 'Petugas Meteran updated successfully.');
+
     }
 
-    public function destroy($id)
+    public function destroy($id_petugas)
     {
-        $petugasMeteran = PetugasMeteran::findOrFail($id);
-        $petugasMeteran->delete();
-
-        // Handle any additional logic or validation here
-
-        return redirect()->route('petugasMeterans.index')
+        $id_petugas = intval($id_petugas); // Convert $id_petugas to an integer
+    
+        // Find the PetugasMeteran record
+        $petugas = PetugasMeteran::where('id_petugas', $id_petugas)->firstOrFail();
+    
+        // Find the associated User record
+        $user = User::findOrFail($petugas->id_user);
+    
+        // Delete the PetugasMeteran record
+        $petugas->delete();
+    
+        // Delete the associated User record
+        $user->delete();
+    
+        return redirect()->route('admin.petugas.index')
             ->with('success', 'Petugas Meteran deleted successfully.');
     }
 }

@@ -14,17 +14,21 @@ class Pelanggan extends Model
         'id_jenis_pengguna',
         'id_user',
         'id_petugas',
-        'email_pelanggan',
-        'kelurahan',
-        'kecamatan',
+        'email',
+        'id_area'
     ];
 
-    public function administrator()
+    public function admin()
     {
-        return $this->belongsTo(Administrator::class, 'id_admin');
+        return $this->belongsTo(admin::class, 'id_admin');
     }
 
-    public function jenisPengguna()
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'id_area');
+    }
+
+    public function jenis_pengguna()
     {
         return $this->belongsTo(JenisPengguna::class, 'id_jenis_pengguna');
     }
@@ -34,18 +38,18 @@ class Pelanggan extends Model
         return $this->belongsTo(User::class, 'id_user');
     }
 
-    public function petugasMeteran()
+    public function petugas_meteran()
     {
         return $this->belongsTo(PetugasMeteran::class, 'id_petugas');
     }
 
     public function tagihan()
     {
-        return $this->hasMany(Tagihan::class, 'id_pelanggan');
+        return $this->hasMany(Tagihan::class, 'id_tagihan');
     }
 
     public function pembayaran()
     {
-        return $this->hasMany(Pembayaran::class, 'id_pelanggan');
+        return $this->hasMany(Pembayaran::class, 'id_pembayaran');
     }
 }

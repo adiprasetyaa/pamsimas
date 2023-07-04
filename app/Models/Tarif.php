@@ -16,7 +16,7 @@ class Tarif extends Model
         'maximum',
     ];
 
-    public function jenisPengguna()
+    public function jenis_pengguna()
     {
         return $this->belongsTo(JenisPengguna::class, 'id_jenis_pengguna');
     }

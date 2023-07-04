@@ -22,6 +22,11 @@ class Pembayaran extends Model
         return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
     }
 
+    public function tagihan()
+    {
+        return $this->belongsTo(Tagihan::class, 'id_tagihan');
+    }
+
     public function kasir()
     {
         return $this->belongsTo(Kasir::class, 'id_kasir');

@@ -15,14 +15,20 @@ class PetugasMeteran extends Model
         'area',
     ];
 
-    public function administrator()
+
+    public function admin()
     {
-        return $this->belongsTo(Administrator::class, 'id_admin');
+    return $this->belongsTo(Admin::class, 'id_admin');
     }
+
 
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
+    }
+
+    public function area(){
+        return $this->belongsTo(Area::class, 'id_area');
     }
 
     public function pelanggan()

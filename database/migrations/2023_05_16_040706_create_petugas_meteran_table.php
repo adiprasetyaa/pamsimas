@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id('id_petugas')->unique();
             $table->unsignedBigInteger('id_admin');
             $table->unsignedBigInteger('id_user');
-            $table->string('area', 50)->nullable(false);
+            $table->unsignedBigInteger('id_area');
 
             $table->foreign('id_user')->references('id_user')->on('users');
             $table->foreign('id_admin')->references('id_admin')->on('admin');
+            $table->foreign('id_area')->references('id_area')->on('area');
             $table->timestamps();
         });
     }

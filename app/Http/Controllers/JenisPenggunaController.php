@@ -9,56 +9,69 @@ class JenisPenggunaController extends Controller
 {
     public function index()
     {
-        $jenisPenggunas = JenisPengguna::all();
-        return view('jenis_penggunas.index', compact('jenisPenggunas'));
+        $data_jenis_pengguna = JenisPengguna::latest()->get();
+        return view('admin.backend.jenis_pengguna.index',compact('data_jenis_pengguna'));
     }
 
     public function create()
     {
-        return view('jenis_penggunas.create');
+        return view('admin.backend.jenis_pengguna.index');
     }
 
     public function store(Request $request)
     {
-        $jenisPengguna = JenisPengguna::create([
-            'nama_jenis_pengguna' => $request->input('nama_jenis_pengguna'),
-            'id_admin' => $request->input('id_admin'),
+        $this-> validate($request,[
+            'nama_jenis_pengguna' => 'required',
+            'id_admin' => 'required',
         ]);
 
-        return redirect()->route('jenis_penggunas.index')
+        $data_jenis_pengguna = JenisPengguna::create([
+            'nama_jenis_pengguna' => $request->nama_jenis_pengguna,
+            'id_admin' => $request->id_admin,
+        ]);
+
+        $data_jenis_pengguna->save();
+
+        return redirect()->route('admin.jenis.pengguna.index')
             ->with('success', 'Jenis Pengguna created successfully.');
     }
 
-    public function show($id)
+    public function show(JenisPengguna $jenisPengguna)
     {
-        $jenisPengguna = JenisPengguna::findOrFail($id);
-        return view('jenis_penggunas.show', compact('jenisPengguna'));
+        return view('jenis_pengguna.show', compact('jenisPengguna'));
     }
 
-    public function edit($id)
+    public function edit(JenisPengguna $jenisPengguna)
     {
-        $jenisPengguna = JenisPengguna::findOrFail($id);
-        return view('jenis_penggunas.edit', compact('jenisPengguna'));
+        return view('jenis_pengguna.edit', compact('jenisPengguna'));
     }
 
-    public function update(Request $request, $id)
+
+    public function update(Request $request, $id_jenis_pengguna)
     {
-        $jenisPengguna = JenisPengguna::findOrFail($id);
-        $jenisPengguna->update([
-            'nama_jenis_pengguna' => $request->input('nama_jenis_pengguna'),
-            'id_admin' => $request->input('id_admin'),
+        $this-> validate($request,[
+            'nama_jenis_pengguna' => 'required',
+            'id_admin' => 'required',
         ]);
 
-        return redirect()->route('jenis_penggunas.index')
+        $data_jenis_pengguna = JenisPengguna::findOrFail($id_jenis_pengguna);
+
+        $data_jenis_pengguna->nama_jenis_pengguna = $request->nama_jenis_pengguna;
+        $data_jenis_pengguna->id_admin = $request->id_admin;
+        $data_jenis_pengguna->save();
+    
+        return redirect()->route('admin.jenis.pengguna.index')
             ->with('success', 'Jenis Pengguna updated successfully.');
+
     }
 
-    public function destroy($id)
+    public function destroy($id_jenis_pengguna)
     {
-        $jenisPengguna = JenisPengguna::findOrFail($id);
-        $jenisPengguna->delete();
-
-        return redirect()->route('jenis_penggunas.index')
+        $data_jenis_pengguna = JenisPengguna::findOrFail($id_jenis_pengguna);
+        $data_jenis_pengguna->delete();
+    
+        return redirect()->route('admin.jenis.pengguna.index')
             ->with('success', 'Jenis Pengguna deleted successfully.');
+    
     }
 }
