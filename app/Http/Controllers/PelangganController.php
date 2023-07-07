@@ -66,8 +66,7 @@ class PelangganController extends Controller
         $pelanggan->id_area = $request->id_area;
         $pelanggan->save();
 
-        return redirect()->route('admin.pelanggan.index')
-            ->with('success', 'Pelanggan created successfully.');
+        return redirect('/admin/sendemail/'.$user->id_user);
     }
 
     public function show($id)
