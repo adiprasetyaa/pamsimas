@@ -107,35 +107,78 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 
-Route::middleware(['auth', 'role:petugas'])->group(function () {
-    Route::get('/petugas/dashboard',[PetugasMeteranController::class, 'PetugasDashboard'])->name('petugas.dashboard');
-    
-}); // End Group Petugas Middleware
+    Route::middleware(['auth', 'role:petugas'])->group(function () {
+        Route::get('/petugas/dashboard',[PetugasMeteranController::class, 'PetugasDashboard'])->name('petugas.dashboard');
 
-Route::middleware(['auth', 'role:pelanggan'])->group(function () {
-    Route::get('/pelanggan/dashboard',[PelangganController::class, 'PelangganDashboard'])->name('pelanggan.dashboard');
-    
-}); // End Group Pelanggan Middleware
+        Route::controller(PetugasMeteranController::class)->group(function(){
+            Route::get('/petugas/manage-penggunaan-air', 'showDaftarPelanggan')->name('petugas.show.daftar.pelanggan');
+            Route::get('/petugas/manage-penggunaan-air/show/{id_pelanggan}','showDetailPelanggan')->name('petugas.show.detail.pelanggan');
+            Route::get('/petugas/manage-penggunaan-air/create/{id_pelanggan}', 'createPenggunaanAir')->name('petugas.create.penggunaan.air');
+            Route::post('/petugas/manage-penggunaan-air/store/{id_pelanggan}','storePenggunaanAir')->name('petugas.store.penggunaan.air');
+            Route::get('petugas/manage-penggunaan-air/edit/{id_pelanggan}','editPenggunaanAir')->name('petugas.edit.penggunaan.air');
+            Route::put('petugas/manage-penggunaan-air/update/{id_pelanggan', 'updatePenggunaanAir')->name('petugas.update.penggunaan.air');
+        });
 
-Route::middleware(['auth', 'role:pelanggan'])->group(function () {
+        Route::controller(TagihanController::class)->group(function(){
+            Route::get('/petugas/input-penggunaan-air/create', 'createInputPenggunaanAir')->name('petugas.input.create');
+            Route::post('petugas/input-penggunaan-air/store', 'storeInputPenggunaanAir')->name('petugas.input.store');
+            Route::get('petugas/generate-tagihan/create', 'generateTagihanCreate')->name('petugas.generate.create');
+            Route::post('petugas/generate-tagihan/store', 'generateTagihanStore')->name('petugas.generate.store');
+            Route::get('/petugas/generate-tagihan/show','generateTagihanShow')->name('petugas.generate.show');
+        });
+        
+    }); // End Group Petugas Middleware
 
-    Route::controller(TagihanController::class)->group(function(){
-        Route::get('/pelanggan/tagihan', 'index')->name('pelanggan.tagihan.index');
-        Route::get('/pelanggan/daftar-tagihan/{id_tagihan}','show')->name('pelanggan.tagihan.show');
-    });
+    Route::middleware(['auth', 'role:pelanggan'])->group(function () {
+        Route::get('/pelanggan/dashboard',[PelangganController::class, 'PelangganDashboard'])->name('pelanggan.dashboard');
+        
+        }); // End Group Pelanggan Middleware
 
-    Route::controller(PembayaranController::class)->group(function(){
-        Route::get('/pelanggan/pembayaran', 'index')->name('pelanggan.pembayaran.index');
-        Route::get('/pelanggan/pembayaran/create/{id_tagihan}','create')->name('pelanggan.pembayaran.create');
-        Route::put('/pelanggan/pembayaran/store/{id_tagihan}', 'store')->name('pelanggan.pembayaran.store');
-    });
-    
-    
-}); // 
+        Route::middleware(['auth', 'role:pelanggan'])->group(function () {
+
+            Route::controller(TagihanController::class)->group(function(){
+                Route::get('/pelanggan/tagihan', 'index')->name('pelanggan.tagihan.index');
+                Route::get('/pelanggan/daftar-tagihan/{id_tagihan}','show')->name('pelanggan.tagihan.show');
+            });
+
+            Route::controller(PembayaranController::class)->group(function(){
+                Route::get('/pelanggan/pembayaran', 'index')->name('pelanggan.pembayaran.index');
+                Route::get('/pelanggan/pembayaran/create/{id_tagihan}','create')->name('pelanggan.pembayaran.create');
+                Route::put('/pelanggan/pembayaran/store/{id_tagihan}', 'store')->name('pelanggan.pembayaran.store');
+            });
+            
+        
+    }); // 
 
 // Route::get('/pelanggan/pembayaran/show/{id_pembayaran}', 'show')->name('pelanggan.pembayaran.show');
 Route::middleware(['auth', 'role:kasir'])->group(function () {   
     Route::get('/kasir/dashboard',[KasirController::class, 'KasirDashboard'])->name('kasir.dashboard');
+
+    Route::controller(KasirController::class)->group(function(){
+
+        // Daftar Tagihan Menu 
+        Route::get('/kasir/cek-tagihan', 'showDaftarTagihan')->name('kasir.cek.daftar.tagihan');
+        Route::get('/kasir/cek-tagihan/show/{id_tagihan}','showDetailTagihan')->name('kasir.cek.detail.tagihan');
+
+        // Approval Pembayaran Menu
+        Route::get('/kasir/daftar-bukti-pembayaran', 'showDaftarPembayaran')->name('kasir.daftar.bukti.pembayaran');
+        Route::get('/kasir/daftar-bukti-pembayaran/show/{id_tagihan}','showDetailPembayaran')->name('kasir.daftar.detail.pembayaran');
+        Route::get('/kasir/bukti-pembayaran/show/{id_tagihan}', 'showBuktiPembayaran')->name('kasir.bukti.pembayaran');
+        Route::put('/kasir-daftar-bukti-pembayaran/approved/{id_tagihan}','approvePembayaran')->name('kasir.pembayaran.approved');
+        Route::put('/kasir-daftar-bukti-pembayaran/declined/{id_tagihan}','declinePembayaran')->name('kasir.pembayaran.declined');
+
+        // Cash Payment Menu
+        Route::get('/kasir/pembayaran-tunai', 'showDaftarPembayaranTunai')->name('kasir.daftar.pembayaran.tunai');
+        Route::get('/kasir/pembayaran-tunai/show/{id_tagihan}', 'showDetailPembayaranTunai')->name('kasir.detail.pembayaran.tunai');
+        Route::put('/kasir/pembayaran-tunai/paid/{id_tagihan}', 'paidPembayaran')->name('kasir.pembayaran.paid');
+        // Invoice Pages
+        Route::get('/kasir/pembayaran-tunai/invoice-pages/{id_tagihan}', 'invoicePages')->name('kasir.pembayaran.invoice');
+        Route::get('/kasir/pembayaran-tunai/cetak-invoice/{id_tagihan}', 'printInvoice')->name('kasir.pembayaran.cetak.invoice');
+        Route::get('/kasir/pembayaran-tunai/view-invoice/{id_tagihan}', 'viewInvoice')->name('kasir.pembayaran.view.invoice');
+        Route::get('/kasir/pembayaran-tunai/cetak-struk/{id_tagihan}', 'printStruk')->name('kasir.pembayaran.cetak.struk');
+    });
+
+
 }); // End Group Kasir Middleware
 
 Route::get('/admin/login',[AdminController::class, 'AdminLogin'])->name('admin.login');

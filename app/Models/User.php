@@ -29,12 +29,12 @@ class User extends Authenticatable
         'email_verified_at',
     ];
 
-    public function administrator()
+    public function admin()
     {
-        return $this->hasOne(Administrator::class, 'id_user');
+        return $this->hasOne(admin::class, 'id_user');
     }
 
-    public function petugasMeteran()
+    public function petugas_meteran()
     {
         return $this->hasOne(PetugasMeteran::class, 'id_user');
     }

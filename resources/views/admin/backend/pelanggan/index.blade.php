@@ -4,95 +4,95 @@
 <main id="main" class="main">
 
 <div class="pagetitle">
-<nav>
-    <ol class="breadcrumb">
-    <!-- Vertically centered Modal -->
-    <button type="button" action="{{ route('admin.pelanggan.create') }}" method="GET" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#add_data"><i class="bi bi-plus-lg me-2"></i> 
-        Add Pelanggan 
-    </button>
-    <div class="modal fade" id="add_data" tabindex="-1" >
-        <div class="modal-dialog modal-dialog-centered" style="width: 800px;">
-        <div class="modal-content">
-            <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <nav>
+        <ol class="breadcrumb">
+        <!-- Vertically centered Modal -->
+        <button type="button" action="{{ route('admin.pelanggan.create') }}" method="GET" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#add_data"><i class="bi bi-plus-lg me-2"></i> 
+            Add Pelanggan 
+        </button>
+        <div class="modal fade" id="add_data" tabindex="-1" >
+            <div class="modal-dialog modal-dialog-centered" style="width: 800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- General Form Elements -->
+                    <h5 class="card-title">Add Pelanggan</h5>
+                    <form action="{{ route('admin.pelanggan.store') }}" method="POST">
+                    @csrf
+                        <div class="row mb-3 m-2">
+                            <label for="name" class="col-sm-12 col-form-label">Nama Pelanggan</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-3 m-2">
+                            <label for="email" class="col-sm-12 col-form-label">Email Pelanggan</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="email" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-3 m-2">
+                            <label for="password" class="col-sm-12 col-form-label">Password</label>
+                            <div class="col-sm-12">
+                                <input type="password" name="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-3 m-2">
+                            <label for="id_admin" class="col-sm-12 col-form-label">Id Admin</label>
+                            <div class="col-sm-12">
+                                <select class="form-select" name="id_admin" id="id_admin" class="form-select" aria-label="Default select example">
+                                    <option selected>- Pilih Id Admin -</option>
+                                    @foreach ($data_admin as $items )
+                                    <option value="{{ $items->id_admin }}">{{ $items->id_admin }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3 m-2">
+                            <label for="id_jenis_pengguna" class="col-sm-12 col-form-label">Jenis Pengguna</label>
+                            <div class="col-sm-12">
+                                <select class="form-select" name="id_jenis_pengguna" id="id_jenis_pengguna" class="form-select" aria-label="Default select example">
+                                    <option selected>- Pilih Jenis Pengguna -</option>
+                                    @foreach ($data_jenis_pengguna as $items )
+                                    <option value="{{ $items->id_jenis_pengguna }}">{{ $items->nama_jenis_pengguna }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3 m-2">
+                            <label for="id_area" class="col-sm-12 col-form-label">Wilayah</label>
+                            <div class="col-sm-12">
+                                <select class="form-select" name="id_area" id="id_area" class="form-select" aria-label="Default select example">
+                                    <option selected>- Pilih Area Petugas-</option>
+                                    @foreach ($data_area as $items )
+                                    <option value="{{ $items->id_area }}">{{ $items->nama_area }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3 m-2">
+                            <label for="id_petugas" class="col-sm-12 col-form-label">Petugas Meteran</label>
+                            <div class="col-sm-12">
+                                <select class="form-select" name="id_petugas" id="id_petugas" class="form-select" aria-label="Default select example" onchange="filterPetugas()">
+                                    <option selected>- Pilih Nama Petugas Petugas-</option>
+                                    @foreach ($data_petugas as $items )
+                                    <option value="{{ $items->id_petugas }}">{{ $items->user->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form><!-- End General Form Elements -->
+                </div>
             </div>
-            <div class="modal-body">
-                <!-- General Form Elements -->
-                <h5 class="card-title">Add Pelanggan</h5>
-                <form action="{{ route('admin.pelanggan.store') }}" method="POST">
-                @csrf
-                    <div class="row mb-3 m-2">
-                        <label for="name" class="col-sm-12 col-form-label">Nama Pelanggan</label>
-                        <div class="col-sm-12">
-                            <input type="text" name="name" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row mb-3 m-2">
-                        <label for="email" class="col-sm-12 col-form-label">Email Pelanggan</label>
-                        <div class="col-sm-12">
-                            <input type="text" name="email" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row mb-3 m-2">
-                        <label for="password" class="col-sm-12 col-form-label">Password</label>
-                        <div class="col-sm-12">
-                            <input type="password" name="password" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row mb-3 m-2">
-                        <label for="id_admin" class="col-sm-12 col-form-label">Id Admin</label>
-                        <div class="col-sm-12">
-                            <select class="form-select" name="id_admin" id="id_admin" class="form-select" aria-label="Default select example">
-                                <option selected>- Pilih Id Admin -</option>
-                                @foreach ($data_admin as $items )
-                                <option value="{{ $items->id_admin }}">{{ $items->id_admin }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3 m-2">
-                        <label for="id_jenis_pengguna" class="col-sm-12 col-form-label">Jenis Pengguna</label>
-                        <div class="col-sm-12">
-                            <select class="form-select" name="id_jenis_pengguna" id="id_jenis_pengguna" class="form-select" aria-label="Default select example">
-                                <option selected>- Pilih Jenis Pengguna -</option>
-                                @foreach ($data_jenis_pengguna as $items )
-                                <option value="{{ $items->id_jenis_pengguna }}">{{ $items->nama_jenis_pengguna }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3 m-2">
-                        <label for="id_area" class="col-sm-12 col-form-label">Wilayah</label>
-                        <div class="col-sm-12">
-                            <select class="form-select" name="id_area" id="id_area" class="form-select" aria-label="Default select example">
-                                <option selected>- Pilih Area Petugas-</option>
-                                @foreach ($data_area as $items )
-                                <option value="{{ $items->id_area }}">{{ $items->nama_area }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3 m-2">
-                        <label for="id_petugas" class="col-sm-12 col-form-label">Petugas Meteran</label>
-                        <div class="col-sm-12">
-                            <select class="form-select" name="id_petugas" id="id_petugas" class="form-select" aria-label="Default select example" onchange="filterPetugas()">
-                                <option selected>- Pilih Nama Petugas Petugas-</option>
-                                @foreach ($data_petugas as $items )
-                                <option value="{{ $items->id_petugas }}">{{ $items->user->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </div>
-                </form><!-- End General Form Elements -->
             </div>
-        </div>
-        </div>
-    </div><!-- End Vertically centered Modal-->
-    </ol>
+        </div><!-- End Vertically centered Modal-->
+        </ol>
     </nav>
 </div><!-- End Page Title -->
 

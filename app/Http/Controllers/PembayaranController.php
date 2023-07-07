@@ -17,34 +17,30 @@ class PembayaranController extends Controller
 
     public function store(Request $request, $id_tagihan)
     {
-        // ddd($request)->all();
+        // dd($request)->all();
 
-        // Validation for the input
+        // Find the Tagihan record
+        $tagihan = Tagihan::findOrFail($id_tagihan);
 
-        // Get tagihan data by id_tagihan
-        // $tagihan = Tagihan::findOrFail($request->tagihan_id)
-
-        // Find the Pelanggan record
-        $tagihan = Tagihan::where('id_tagihan', $id_tagihan)->firstOrFail();
-
-        // Find the associated User record
-        $pembayaran = Pembayaran::findOrFail($tagihan->id_tagihan);
+        // Find the associated Pembayaran record
+        $pembayaran = Pembayaran::where('id_tagihan', $id_tagihan)->first();
     
         // Handle the uploaded file
         $uploadedFile = $request->bukti_pembayaran;
-        $fileName = $uploadedFile->getClientOriginalName();
-        $uploadedFile->move('upload/bukti_pembayaran/', $fileName);
-        $bukti_pembayaran_path = 'upload/bukti_pembayaran/' . $fileName;
+        $file_name = time().rand(100,999).".".$uploadedFile->getClientOriginalExtension();
+        $uploadedFile->move('upload/bukti_pembayaran/', $file_name);
+        $bukti_pembayaran_path = 'upload/bukti_pembayaran/' . $file_name;
 
         // save to pembayaran table
-        $pembayaran = new Pembayaran();
         $pembayaran->id_tagihan = $id_tagihan;
         $pembayaran->id_pelanggan = $tagihan->id_pelanggan;
         $pembayaran->jumlah_pembayaran = $tagihan->jumlah_tagihan;
+        $tagihan->status = 'Sedang Diproses';
         $pembayaran->id_kasir = $tagihan->id_kasir;
         $pembayaran->bukti_pembayaran = $bukti_pembayaran_path;
         $pembayaran->tanggal_pembayaran = $request->tanggal_pembayaran;
         $pembayaran->save();
+        $tagihan->save();
 
         // Redirect 
         return redirect()->route('pelanggan.tagihan.index')

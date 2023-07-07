@@ -1,5 +1,5 @@
-@extends('pelanggan.pelanggan_dashboard')
-@section('pelanggan')
+@extends('kasir.kasir_dashboard')
+@section('kasir')
 
 <main id="main" class="main">
 

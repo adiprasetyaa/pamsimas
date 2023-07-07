@@ -16,8 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_admin');
             $table->unsignedBigInteger('id_pelanggan');
             $table->unsignedBigInteger('id_petugas');
-            $table->unsignedBigInteger('id_kasir');
-            $table->enum('status', ['Belum Lunas', 'Sedang Diproses', 'Sudah Lunas'])->default('Belum Lunas');
+            $table->unsignedBigInteger('id_kasir')->nullable();
+            $table->enum('status', ['Belum Lunas', 'Sedang Diproses', 'Sudah Lunas'])->nullable(false)->default('Belum Lunas');
+            $table->enum('status_tagihan',['Pending','Completed','Sent'])->nullable(false)->default('Pending');
             $table->double('meteran', 10, 2)->nullable();
             $table->char('bulan_penggunaan',6)->nullable();
             $table->date('tanggal_penagihan')->nullable();

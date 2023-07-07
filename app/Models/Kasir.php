@@ -14,7 +14,7 @@ class Kasir extends Model
         'id_user',
     ];
 
-    public function administrator()
+    public function admin()
     {
         return $this->belongsTo(Administrator::class, 'id_admin');
     }
@@ -27,5 +27,9 @@ class Kasir extends Model
     public function pembayaran()
     {
         return $this->hasMany(Pembayaran::class, 'id_kasir');
+    }
+
+    public function tagihan(){
+        return $this->hasMany(Tagihan::class,'id_kasir');
     }
 }

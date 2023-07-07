@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id('id_pembayaran')->unique();
             $table->unsignedBigInteger('id_pelanggan');
-            $table->unsignedBigInteger('id_kasir');
+            $table->unsignedBigInteger('id_kasir')->nullable();
             $table->unsignedBigInteger('id_tagihan');
-            $table->datetime('tanggal_pembayaran')->nullable(false);
+            $table->datetime('tanggal_pembayaran')->nullable();
             $table->double('jumlah_pembayaran', 17, 2)->nullable(false)->default(0);
             $table->string('bukti_pembayaran', 100)->nullable();
 
