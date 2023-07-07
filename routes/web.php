@@ -10,6 +10,7 @@ use App\Http\Controllers\TarifController;
 use App\Http\Controllers\JenisPenggunaController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\SendemailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -100,6 +101,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/admin/area/edit/{id_area}', 'edit')->name('admin.area.edit');
         Route::put('/admin/area/update/{id_area}', 'update')->name('admin.area.update');
         Route::delete('admin/area/delete/{id_area}','destroy')->name('admin.area.delete');
+    });
+
+    // buat send email
+    Route::controller(SendemailController::class)->group(function(){
+        Route::get('/admin/sendemail/{id}', 'index')->name('admin.sendemail.index');
     });
 
 
