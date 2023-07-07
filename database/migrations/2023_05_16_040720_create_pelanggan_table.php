@@ -19,11 +19,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_petugas');
             $table->unsignedBigInteger('id_area');
             
-            $table->foreign('id_area')->references('id_area')->on('area');
-            $table->foreign('id_user')->references('id_user')->on('users');
-            $table->foreign('id_admin')->references('id_admin')->on('admin');
-            $table->foreign('id_jenis_pengguna')->references('id_jenis_pengguna')->on('jenis_pengguna');
-            $table->foreign('id_petugas')->references('id_petugas')->on('petugas_meteran');
+            $table->foreign('id_area')->references('id_area')->on('area')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_user')->references('id_user')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_admin')->references('id_admin')->on('admin')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_jenis_pengguna')->references('id_jenis_pengguna')->on('jenis_pengguna')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_petugas')->references('id_petugas')->on('petugas_meteran')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();
         });

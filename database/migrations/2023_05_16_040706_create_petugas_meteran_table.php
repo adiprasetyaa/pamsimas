@@ -17,9 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_area');
 
-            $table->foreign('id_user')->references('id_user')->on('users');
-            $table->foreign('id_admin')->references('id_admin')->on('admin');
-            $table->foreign('id_area')->references('id_area')->on('area');
+            $table->foreign('id_user')->references('id_user')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_admin')->references('id_admin')->on('admin')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_area')->references('id_area')->on('area')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
