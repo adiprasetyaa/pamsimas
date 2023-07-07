@@ -20,9 +20,9 @@ return new class extends Migration
             $table->double('jumlah_pembayaran', 17, 2)->nullable(false)->default(0);
             $table->string('bukti_pembayaran', 100)->nullable();
 
-            $table->foreign('id_pelanggan')->references('id_pelanggan')->on('pelanggan');
-            $table->foreign('id_kasir')->references('id_kasir')->on('kasir');
-            $table->foreign('id_tagihan')->references('id_tagihan')->on('tagihan');
+            $table->foreign('id_pelanggan')->references('id_pelanggan')->on('pelanggan')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_kasir')->references('id_kasir')->on('kasir')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_tagihan')->references('id_tagihan')->on('tagihan')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

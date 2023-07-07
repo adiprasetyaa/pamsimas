@@ -24,10 +24,10 @@ return new class extends Migration
             $table->date('tanggal_penagihan')->nullable();
             $table->double('jumlah_tagihan', 17, 2)->nullable(false)->default(0);
 
-            $table->foreign('id_admin')->references('id_admin')->on('admin');
-            $table->foreign('id_petugas')->references('id_petugas')->on('petugas_meteran');
-            $table->foreign('id_pelanggan')->references('id_pelanggan')->on('pelanggan');
-            $table->foreign('id_kasir')->references('id_kasir')->on('kasir');
+            $table->foreign('id_admin')->references('id_admin')->on('admin')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_petugas')->references('id_petugas')->on('petugas_meteran')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_pelanggan')->references('id_pelanggan')->on('pelanggan')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_kasir')->references('id_kasir')->on('kasir')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

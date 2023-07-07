@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('minimum', 10, 2)->nullable(false);
             $table->double('maximum')->default(PHP_INT_MAX)->nullable(false);
 
-            $table->foreign('id_jenis_pengguna')->references('id_jenis_pengguna')->on('jenis_pengguna');
+            $table->foreign('id_jenis_pengguna')->references('id_jenis_pengguna')->on('jenis_pengguna')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();
         });
